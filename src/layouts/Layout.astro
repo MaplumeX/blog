@@ -405,7 +405,23 @@ const setup = () => {
 		}
 	})
 	window.swup.hooks.on('content:replace', initCustomScrollbar)
-	window.swup.hooks.on('visit:start', (visit: {to: {url: string}}) => {
+	window.swup.hooks.on('visit:start', (visit: {to: {url: string}, containers: string[]}) => {
+		// Dynamically switch Swup containers and animation target based on navigation context:
+		// - To/from a post page: replace entire grid, animate #grid-wrapper
+		// - Between non-post pages: replace only main content, animate <main>
+		const gridWrapper = document.getElementById('grid-wrapper')
+		const mainEl = document.getElementById('swup-container')
+		const isGoingToPost = !!visit.to.url.match(/\/posts\/[^/]+/)
+		const isCurrentlyOnPost = !!window.location.pathname.match(/\/posts\/[^/]+/)
+		if (isGoingToPost || isCurrentlyOnPost) {
+			visit.containers = ['#grid-wrapper', '#toc']
+			gridWrapper?.classList.add('transition-swup-fade')
+			mainEl?.classList.remove('transition-swup-fade')
+		} else {
+			gridWrapper?.classList.remove('transition-swup-fade')
+			mainEl?.classList.add('transition-swup-fade')
+		}
+
 		// change banner height immediately when a link is clicked
 		const bodyElement = document.querySelector('body')
 		if (pathsEqual(visit.to.url, url('/'))) {

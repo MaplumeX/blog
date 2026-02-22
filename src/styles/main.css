@@ -65,6 +65,14 @@
         @apply opacity-0 pointer-events-none
     }
 
+    /* Sidebar visibility controlled by data attribute on #main-grid */
+    #main-grid[data-no-sidebar] {
+        grid-template-columns: 1fr;
+    }
+    #main-grid[data-no-sidebar] > #sidebar {
+        display: none;
+    }
+
     #toc-inner-wrapper {
         mask-image: linear-gradient(to bottom, transparent 0%, black 2rem, black calc(100% - 2rem), transparent 100%);
     }
