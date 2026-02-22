@@ -37,7 +37,7 @@ const maxLevel = siteConfig.toc.depth;
     <div id="active-indicator" style="opacity: 0" class:list={[{'hidden': headings.length == 0},
         "absolute left-0 w-[3px] -ml-[1px] rounded-full bg-[var(--toc-line-active)] transition-all"]}></div>
     {headings.filter((heading) => heading.depth < minDepth + maxLevel).map((heading) =>
-        <a href={`#${heading.slug}`} class:list={["block py-1.5 pr-2 text-sm transition-colors rounded-lg hover:text-black/60 dark:hover:text-white/50 hover:bg-[var(--toc-btn-hover)] active:bg-[var(--toc-btn-active)]",
+        <a href={`#${heading.slug}`} class:list={["block py-1.5 pr-2 text-sm transition-colors rounded-lg hover:bg-[var(--toc-btn-hover)] active:bg-[var(--toc-btn-active)]",
             {
                 "pl-4": heading.depth == minDepth,
                 "pl-8": heading.depth == minDepth + 1,

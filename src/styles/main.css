@@ -72,8 +72,14 @@
     table-of-contents a {
         @apply text-black/50 dark:text-white/50
     }
+    table-of-contents a:hover {
+        @apply text-black/60 dark:text-white/50
+    }
     table-of-contents a.visible {
         @apply text-[var(--toc-item-active)] font-medium
+    }
+    table-of-contents a.visible:hover {
+        @apply text-[var(--toc-item-active)]
     }
 
     /* Sidebar visibility controlled by data attribute on #main-grid */
