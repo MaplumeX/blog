@@ -65,6 +65,14 @@
         @apply opacity-0 pointer-events-none
     }
 
+    /* TOC text color: default muted, active themed */
+    table-of-contents a {
+        @apply text-black/50 dark:text-white/50
+    }
+    table-of-contents a.visible {
+        @apply text-[var(--toc-item-active)] font-medium
+    }
+
     /* Sidebar visibility controlled by data attribute on #main-grid */
     #main-grid[data-no-sidebar] {
         grid-template-columns: 1fr;

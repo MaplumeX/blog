@@ -27,36 +27,26 @@ const removeTailingHash = (text: string) => {
 	return text.substring(0, lastIndexOfHash);
 };
 
-let heading1Count = 1;
-
 const maxLevel = siteConfig.toc.depth;
 ---
 {isPostsRoute &&
-<table-of-contents class:list={[className, "group"]}>
+<table-of-contents class:list={[className, "group relative"]}>
+    <!-- Background line -->
+    <div class="absolute left-0 top-0 bottom-0 w-0.5 rounded-full bg-[var(--toc-line-bg)]"></div>
+    <!-- Active indicator line -->
+    <div id="active-indicator" style="opacity: 0" class:list={[{'hidden': headings.length == 0},
+        "absolute left-0 w-[3px] -ml-[1px] rounded-full bg-[var(--toc-line-active)] transition-all"]}></div>
     {headings.filter((heading) => heading.depth < minDepth + maxLevel).map((heading) =>
-            <a href={`#${heading.slug}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
-        hover:bg-[var(--toc-btn-hover)] active:bg-[var(--toc-btn-active)] py-2
-    ">
-                <div class:list={["transition w-5 h-5 shrink-0 rounded-lg text-xs flex items-center justify-center font-bold",
-                    {
-                        "bg-[var(--toc-badge-bg)] text-[var(--btn-content)]": heading.depth == minDepth,
-                        "ml-4": heading.depth == minDepth + 1,
-                        "ml-8": heading.depth == minDepth + 2,
-                    }
-                ]}
-                >
-                    {heading.depth == minDepth && heading1Count++}
-                    {heading.depth == minDepth + 1 && <div class="transition w-2 h-2 rounded-[0.1875rem] bg-[var(--toc-badge-bg)]"></div>}
-                    {heading.depth == minDepth + 2 && <div class="transition w-1.5 h-1.5 rounded-sm bg-black/5 dark:bg-white/10"></div>}
-                </div>
-                <div class:list={["transition text-sm", {
-                    "text-50": heading.depth == minDepth || heading.depth == minDepth + 1,
-                    "text-30": heading.depth == minDepth + 2,
-                }]}>{removeTailingHash(heading.text)}</div>
-            </a>
+        <a href={`#${heading.slug}`} class:list={["block py-1.5 pr-2 text-sm transition-colors rounded-lg hover:text-black/60 dark:hover:text-white/50 hover:bg-[var(--toc-btn-hover)] active:bg-[var(--toc-btn-active)]",
+            {
+                "pl-4": heading.depth == minDepth,
+                "pl-8": heading.depth == minDepth + 1,
+                "pl-12": heading.depth == minDepth + 2,
+            }
+        ]}>
+            {removeTailingHash(heading.text)}
+        </a>
     )}
-    <div id="active-indicator" style="opacity: 0" class:list={[{'hidden': headings.length == 0}, "-z-10 absolute bg-[var(--toc-btn-hover)] left-0 right-0 rounded-xl transition-all " +
-        "group-hover:bg-transparent border-2 border-[var(--toc-btn-hover)] group-hover:border-[var(--toc-btn-active)] border-dashed"]}></div>
 </table-of-contents>}
 
 <script>
@@ -115,10 +105,10 @@ class TableOfContents extends HTMLElement {
         if (min > max) {
             this.activeIndicator?.setAttribute("style", `opacity: 0`);
         } else {
-            let parentOffset = this.tocEl?.getBoundingClientRect().top || 0;
-            let scrollOffset = this.tocEl?.scrollTop || 0;
-            let top = this.tocEntries[min].getBoundingClientRect().top - parentOffset + scrollOffset;
-            let bottom = this.tocEntries[max].getBoundingClientRect().bottom - parentOffset + scrollOffset;
+            const container = this.activeIndicator?.parentElement;
+            const parentOffset = container?.getBoundingClientRect().top || 0;
+            const top = this.tocEntries[min].getBoundingClientRect().top - parentOffset;
+            const bottom = this.tocEntries[max].getBoundingClientRect().bottom - parentOffset;
             this.activeIndicator?.setAttribute("style", `top: ${top}px; height: ${bottom - top}px`);
         }
     };
