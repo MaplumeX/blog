@@ -33,11 +33,17 @@ onMount(() => {
 function switchScheme(newMode: LIGHT_DARK_MODE) {
 	mode = newMode;
 	setTheme(newMode);
+	closePanel();
 }
 
 function togglePanel() {
 	const panel = document.querySelector("#light-dark-panel");
 	panel?.classList.toggle("float-panel-closed");
+}
+
+function closePanel() {
+	const panel = document.querySelector("#light-dark-panel");
+	panel?.classList.add("float-panel-closed");
 }
 </script>
 

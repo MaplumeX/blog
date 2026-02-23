@@ -36,6 +36,8 @@ const togglePanel = () => {
 	panel?.classList.toggle("float-panel-closed");
 };
 
+let blurTimeout: ReturnType<typeof setTimeout> | null = null;
+
 const setPanelVisibility = (show: boolean, isDesktop: boolean): void => {
 	const panel = document.getElementById("search-panel");
 	if (!panel || !isDesktop) return;
@@ -45,6 +47,20 @@ const setPanelVisibility = (show: boolean, isDesktop: boolean): void => {
 	} else {
 		panel.classList.add("float-panel-closed");
 	}
+};
+
+const handleDesktopBlur = (): void => {
+	blurTimeout = setTimeout(() => {
+		setPanelVisibility(false, true);
+	}, 150);
+};
+
+const handleDesktopFocus = (): void => {
+	if (blurTimeout) {
+		clearTimeout(blurTimeout);
+		blurTimeout = null;
+	}
+	search(keywordDesktop, true);
 };
 
 const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
@@ -144,7 +160,8 @@ $: if (initialized && keywordMobile) {
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
 ">
     <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-    <input placeholder="{i18n(I18nKey.search)}" bind:value={keywordDesktop} on:focus={() => search(keywordDesktop, true)}
+    <input placeholder="{i18n(I18nKey.search)}" bind:value={keywordDesktop}
+           on:focus={handleDesktopFocus} on:blur={handleDesktopBlur}
            class="transition-all pl-10 text-sm bg-transparent outline-0
          h-full w-40 active:w-60 focus:w-60 text-black/50 dark:text-white/50"
     >
