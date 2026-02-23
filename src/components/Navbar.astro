@@ -21,10 +21,10 @@ let links: NavBarLink[] = navBarConfig.links.map(
 );
 ---
 <div id="navbar" class="z-50 onload-animation">
-    <div class="absolute h-8 left-0 right-0 -top-8 bg-[var(--card-bg)] transition"></div> <!-- used for onload animation -->
+    <div class="absolute h-8 left-0 right-0 -top-8 bg-[var(--page-bg)] transition"></div> <!-- used for onload animation -->
     <div class:list={[
         className,
-        "card-base !overflow-visible w-full h-[4.5rem] !rounded-none px-4 md:px-8"]}>
+        "card-base !overflow-visible w-full h-[4.5rem] !rounded-none px-4 md:px-8 !bg-white dark:!bg-[oklch(0.20_0_0)] border-b border-[var(--line-color)]"]}>
         <div class="max-w-[var(--page-width)] mx-auto h-full flex items-center justify-between relative">
             <a href={url('/')} class="btn-plain scale-animation rounded-lg h-[3.25rem] px-5 font-bold active:scale-95">
                 <div class="flex flex-row text-[var(--primary)] items-center text-md">
